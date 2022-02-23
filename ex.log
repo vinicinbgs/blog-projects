@@ -1,0 +1,20 @@
+Start
+Put your name
+Your name is vinicius
+Docker version 20.10.11, build dea9396
+git version 2.33.1
+REPOSITORY              TAG       IMAGE ID       CREATED        SIZE
+sail-8.1/app            latest    48c1b6bb7d77   7 weeks ago    732MB
+vinicius-docker-image   latest    de7db1ce28af   3 months ago   5.35MB
+mysql/mysql-server      8.0       087c6f86492c   3 months ago   509MB
+-------
+Start: 
+8737e1ece330d38513d17bf85d8afbbaa652d80742fa47bb156b7498879f3d25
+-------
+Logs: 
+Container running 👍 ( ͡° ͜ʖ ͡°) vinicius
+-------
+vinicius-docker-container-1645534739
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+Untagged: vinicius-docker-image:latest
+Deleted: sha256:de7db1ce28afcd0910a7b94d6db3b93c807264f0e399220454903987d60ebebb
