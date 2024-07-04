@@ -34,6 +34,7 @@ script() {
     echo "-------"
     echo "Logs: " && docker logs ${containerName} # output logs container
     echo "-------"
+    
     # Remove all Containers
     containers=$(docker ps -a --format "{{.Names}}" | grep "${name}-docker-container") # list all containers created in this script
     docker rm -f ${containers}                                                         # remove all containers created in this script
