@@ -1,0 +1,110 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:latest
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: mydb
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - monitoring
+      - backend
+
+  python-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./app.py:/app/app.py
+      - ./logging.json:/app/logging.json
+    ports:
+      - "9999:9999"
+      - "8000:8000"
+    depends_on:
+      - mysql
+    networks:
+      - backend
+      - monitoring
+    logging:
+      driver: "loki"
+      options:
+        loki-url: "http://host.docker.internal:3100/loki/api/v1/push"
+
+  prometheus:
+    image: prom/prometheus:latest
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    ports:
+      - "9090:9090"
+    networks:
+      - monitoring
+
+  grafana:
+    image: grafana/grafana:latest
+    depends_on:
+      - prometheus
+    ports:
+      - "3000:3000"
+    networks:
+      - monitoring
+
+  loki:
+    image: grafana/loki:latest
+    command: -config.file=/etc/loki/local-config.yaml
+    ports:
+      - "3100:3100"
+    networks:
+      - monitoring
+
+  mysqld-exporter:
+    image: prom/mysqld-exporter
+    ports:
+      - "9104:9104"
+    networks:
+      - monitoring
+      - backend
+    volumes:
+      - ./my.cnf:/.my.cnf
+    command:
+      - '--mysqld.address=mysql:3306'
+      - '--no-collect.slave_status'
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:v0.45.0
+    container_name: cadvisor
+    privileged: true
+    devices:
+      - /dev/kmsg:/dev/kmsg
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /etc/machine-id:/etc/machine-id:ro
+      - /var/lib/dbus/machine-id:/var/lib/dbus/machine-id:ro
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    networks:
+      - cadvisor
+      - monitoring
+      - backend
+    labels:
+      org.label-schema.group: "monitoring"
+
+volumes:
+  mysql_data:
+
+networks:
+  monitoring:
+  backend:
+  cadvisor:

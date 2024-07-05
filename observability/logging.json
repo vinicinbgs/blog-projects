@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "disable_existing_loggers": false,
+  "formatters": {
+    "jsonFormatter": {
+      "()": "loggingz.formatters.JsonLoggerFormatter"
+    },
+    "simpleFormatter": {
+      "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    }
+  },
+  "handlers": {
+    "consoleHandler": {
+      "class": "logging.StreamHandler",
+      "formatter": "jsonFormatter",
+      "stream": "ext://sys.stdout"
+    }
+  },
+  "loggers": {
+    "custom": {
+      "level": "INFO",
+      "handlers": ["consoleHandler"],
+      "propagate": false,
+      "qualname": "custom"
+    }
+  }
+}
