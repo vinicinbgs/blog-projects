@@ -11,12 +11,11 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the rest of the application code into the container
-COPY ./app.py ./app.py
-COPY ./loggingz ./loggingz
-COPY ./logging.json ./logging.json
+COPY ./main.py ./main.py
 
 # Expose port 9999 for the Flask application
 EXPOSE 9999
 
-# Run the application
-CMD ["python", "app.py"]
+ENV OTEL_PYTHON_LOGGING_AUTO_INSTRUMENTATION_ENABLED=true
+
+CMD ["opentelemetry-instrument", "python", "main.py"]

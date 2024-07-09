@@ -13,5 +13,6 @@ class JsonLoggerFormatter(logging.Formatter):
             "message": record.getMessage(),
             "extra": getattr(record, "args", {}),
             "trace_id": TraceId().get_id(),
+            "span_id": str(datetime.utcnow().timestamp())
         }
-        return json.dumps(log_record)
+        return json.dumps(log_record, default=str)

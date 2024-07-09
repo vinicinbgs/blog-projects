@@ -1,0 +1,46 @@
+services:
+  app1:
+    build: ./app1
+    volumes:
+      - ./app1:/app
+    ports:
+      - "9998:9999"
+    environment:
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://jaeger:4318/v1/traces
+      - OTEL_SERVICE_NAME=app1
+      - OTEL_PYTHON_LOG_CORRELATION=true
+      - MS_TWO_ENDPOINT=http://app2:9999
+    networks:
+      - oltp
+    labels:
+      - lang=python
+  
+  app2:
+    build: ./app2
+    volumes:
+      - ./app2:/app
+    ports:
+      - "9999:9999"
+    environment:
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://jaeger:4318/v1/traces
+      - OTEL_SERVICE_NAME=app2
+    networks:
+      - oltp
+    labels:
+      - lang=python
+
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    ports:
+      - "16686:16686"
+      - "4318:4318"
+    command: ["--collector.otlp.http.host-port=:4318"]
+    environment:
+      COLLECTOR_OTLP_ENABLED: true
+    networks:
+      - oltp
+    labels:
+      - lang=go
+
+networks:
+  oltp:

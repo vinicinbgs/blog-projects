@@ -16,16 +16,38 @@ services:
       - monitoring
       - backend
 
-  python-app:
+  ms-one:
     build:
-      context: .
+      context: ./ms-one
       dockerfile: Dockerfile
     volumes:
-      - ./app.py:/app/app.py
-      - ./logging.json:/app/logging.json
+      - ./ms-one/app.py:/app/app.py
+      - ./loggingz:/app/loggingz
+      - ./ms-one/logging.json:/app/logging.json
+    ports:
+      - "9998:9999"
+      - "8000:8000"
+    depends_on:
+      - mysql
+    networks:
+      - backend
+      - monitoring
+    logging:
+      driver: "loki"
+      options:
+        loki-url: "http://host.docker.internal:3100/loki/api/v1/push"
+
+  ms-two:
+    build: 
+      context: ./ms-two
+      dockerfile: Dockerfile
+    volumes:
+      - ./ms-two/app.py:/app/app.py
+      - ./loggingz:/app/loggingz
+      - ./ms-two/logging.json:/app/logging.json
     ports:
       - "9999:9999"
-      - "8000:8000"
+      - "8001:8000"
     depends_on:
       - mysql
     networks:
@@ -55,6 +77,9 @@ services:
       - "3000:3000"
     networks:
       - monitoring
+    volumes:
+      - ./grafana/dashboards:/etc/grafana/provisioning/dashboards
+      - ./grafana/datasources:/etc/grafana/provisioning/datasources
 
   loki:
     image: grafana/loki:latest
