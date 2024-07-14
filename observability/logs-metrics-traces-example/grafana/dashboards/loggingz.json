@@ -142,6 +142,18 @@
                 "value": 127
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "timestamp"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 240
+              }
+            ]
           }
         ]
       },
@@ -222,6 +234,27 @@
               "trace_id": 12
             },
             "renameByName": {}
+          }
+        },
+        {
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [
+              {
+                "destinationType": "time",
+                "targetField": "timestamp"
+              }
+            ],
+            "fields": {}
+          }
+        },
+        {
+          "id": "formatTime",
+          "options": {
+            "outputFormat": "",
+            "timeField": "timestamp",
+            "timezone": "America/Sao_Paulo",
+            "useTimezone": true
           }
         }
       ],
@@ -361,8 +394,8 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 9,
-        "w": 24,
+        "h": 8,
+        "w": 19,
         "x": 0,
         "y": 7
       },
@@ -387,7 +420,7 @@
             "uid": "ddr549kmip88wc"
           },
           "editorMode": "code",
-          "expr": "sum(count_over_time({compose_project=\"logs-metrics-traces-example\"} | json | __error__ != \"JSONParserErr\" | line_format \"{{.compose_service}}\" |~ `${ms}` | line_format \"{{.extra_path}}\" !~ \"^$\" [1m])) by (extra_path, compose_service)",
+          "expr": "sum(count_over_time({compose_project=\"logs-metrics-traces-example\"} | json | __error__ != \"JSONParserErr\" | line_format \"{{.compose_service}}\" |~ `${ms}` | line_format \"{{.extra_path}}\" !~ \"^$\" [1s])) by (extra_path, compose_service)",
           "hide": false,
           "legendFormat": "{{compose_service}} - Endpoint: {{extra_path}}",
           "queryType": "range",
@@ -435,13 +468,13 @@
     ]
   },
   "time": {
-    "from": "now-12h",
-    "to": "now"
+    "from": "2024-07-09T12:38:37.365Z",
+    "to": "2024-07-09T12:42:19.831Z"
   },
   "timepicker": {},
   "timezone": "browser",
   "title": "Loggingz",
   "uid": "cdr57ur5qpgxsc",
-  "version": 8,
+  "version": 11,
   "weekStart": ""
 }

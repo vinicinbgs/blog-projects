@@ -27,6 +27,8 @@ services:
     ports:
       - "9998:9999"
       - "8000:8000"
+    environment:
+      - MS_TWO_ENDPOINT=http://ms-two:9999
     depends_on:
       - mysql
     networks:
