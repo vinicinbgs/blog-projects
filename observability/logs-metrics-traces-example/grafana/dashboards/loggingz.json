@@ -264,7 +264,7 @@
     {
       "datasource": {
         "type": "yesoreyeram-infinity-datasource",
-        "uid": "ddr6nznjyd6gwe"
+        "uid": "ddrvoeexyaupsd"
       },
       "fieldConfig": {
         "defaults": {
@@ -314,7 +314,7 @@
           "columns": [],
           "datasource": {
             "type": "yesoreyeram-infinity-datasource",
-            "uid": "ddr6nznjyd6gwe"
+            "uid": "ddrvoeexyaupsd"
           },
           "filters": [],
           "format": "logs",

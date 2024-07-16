@@ -76,7 +76,9 @@ services:
     depends_on:
       - prometheus
     ports:
-      - "3000:3000"
+      - "3003:3000"
+    environment:
+      - GF_INSTALL_PLUGINS=yesoreyeram-infinity-datasource
     networks:
       - monitoring
     volumes:

@@ -41,6 +41,13 @@ services:
       - oltp
     labels:
       - lang=go
+  
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3003:3000"
+    networks:
+      - oltp
 
 networks:
   oltp:

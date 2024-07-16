@@ -17,3 +17,7 @@ datasources:
     url: http://prometheus:9090
     jsonData:
       timeInterval: "5s"
+  
+  - name: Infinity
+    type: yesoreyeram-infinity-datasource
+    uid: ddrvoeexyaupsd
